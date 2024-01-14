@@ -9,7 +9,7 @@ from passlib.context import CryptContext
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.exc import IntegrityError
 
-from tables.user import User
+from tables.user import SuperUser
 from tables.auth import ResetPasswordCode
 from schemas.token import TokenData, Token
 import settings
@@ -35,7 +35,7 @@ def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
 
 
-async def authenticate_user(username: str, password: str) -> User:
+async def authenticate_user(username: str, password: str) -> SuperUser:
     async with db.async_session() as session:  # type: ignore
         user = await users.get_user_by_username(username, session)
     if not user or not verify_password(password, user.hashed_password):
@@ -59,7 +59,7 @@ def create_access_token(data: dict[str, Any], expires: Optional[timedelta]) -> s
     return encoded_jwt
 
 
-async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
+async def get_current_user(token: str = Depends(oauth2_scheme)) -> SuperUser:
     credential_exc = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -86,7 +86,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
     return user
 
 
-async def get_current_active_user(current_user: User = Depends(get_current_user)):
+async def get_current_active_user(current_user: SuperUser = Depends(get_current_user)):
     if not current_user.is_active:
         raise exceptions.BadRequest("Inactive user")
     return current_user
