@@ -5,7 +5,9 @@ include .env
 help:
 	@echo "make"
 	@echo "    install"
-	@echo "        Install all packages of poetry project locally."
+	@echo "        Install all packages of project locally."
+	@echo "    install-venv"
+	@echo "        Create virtual environment and install all packages of project locally."
 	@echo "    run-dev"
 	@echo "        Run development docker compose."
 	@echo "    stop-dev"
@@ -18,8 +20,15 @@ help:
 	@echo "        Add new database migration using alembic."
 	@echo "    upgrade"
 	@echo "        This helps to upgrade pending migrations."	
+	@echo "    downgrade"
+	@echo "        Undo latest alembic migration."
 	@echo "    formatter"
 	@echo "        Apply black formatting to code."
+
+install-venv:
+	python3 -m venv venv
+	source /venv/bin/activate
+	pip install -r src/requirements.txt
 
 install:
 	pip install -r src/requirements.txt
