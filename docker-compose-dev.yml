@@ -13,7 +13,7 @@ services:
     volumes:
       - ./src/api:/app
     depends_on:
-      - redis_server
+      # - redis_server
       - database
   
   database:
