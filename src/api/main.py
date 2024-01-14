@@ -16,7 +16,7 @@ from routes import api
 from database.crud import engine, async_session
 from database import users
 from admin import UserView
-from tables.user import SuperUser
+from tables.user import User
 from services import auth_service
 from services import admin_auth_provider
 import settings
@@ -65,7 +65,7 @@ admin = Admin(
     ),
     middlewares=[Middleware(SessionMiddleware, secret_key=settings.auth.SECRET_KEY)],
 )
-admin.add_view(UserView(SuperUser, icon="fa fa-users"))
+admin.add_view(UserView(User, icon="fa fa-users"))
 admin.mount_to(app)
 
 
