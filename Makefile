@@ -43,7 +43,7 @@ upgrade:
 	sudo docker-compose run fastapi_server alembic upgrade head
 
 downgrade:
-	sudo docker-compose exec fastapi_server alembic downgrade -1
+	sudo docker-compose run fastapi_server alembic downgrade -1
 
 revision:	
-	sudo docker-compose exec fastapi_server alembic revision --autogenerate -m "$(msg)"
+	sudo docker-compose run fastapi_server alembic revision --autogenerate -m "$(msg)"
